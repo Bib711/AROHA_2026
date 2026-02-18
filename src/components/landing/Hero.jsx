@@ -7,7 +7,7 @@ import sjcLogo from '@/assets/SJC_LOGO.png';
 
 const stats = [
   { icon: Trophy, label: 'Prize Pool', value: '₹60,000', color: 'text-neon-gold' },
-  { icon: Calendar, label: 'Event Time', value: '12 PM – 6 PM', color: 'text-neon-cyan' },
+  { icon: Calendar, label: 'Event Time', value: '12 PM – 5 PM', color: 'text-neon-cyan' },
   { icon: Users, label: 'Team Size', value: '4–10 Members', color: 'text-neon-magenta' },
   { icon: Zap, label: 'Entry Fee', value: '₹1,200/team', color: 'text-neon-violet' },
 ];
