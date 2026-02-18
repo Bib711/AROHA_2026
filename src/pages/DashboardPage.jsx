@@ -255,12 +255,14 @@ export default function DashboardPage() {
                         </div>
 
                         <div className="flex items-center gap-2 mt-3">
+                          {reg.payment_status !== 'completed' && (
                           <Button variant="neon-outline" size="sm" asChild>
                             <Link to={`/register?edit=${reg.registration_id}`} className="gap-1">
                               <Edit className="w-3 h-3" />
                               Edit
                             </Link>
                           </Button>
+                          )}
                           <Button
                             variant="ghost"
                             size="sm"

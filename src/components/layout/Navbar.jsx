@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, LogOut, User, LayoutDashboard, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import sargamLogo from '@/assets/SARGAM_LOGO.png';
+import sargamLogo from '@/assets/icon_logo.png';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
