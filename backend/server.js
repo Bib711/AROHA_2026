@@ -34,6 +34,52 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/registrations', registrationRoutes);
 
+// OAuth callback handler
+app.get('/auth/callback', (req, res) => {
+  // Supabase sends tokens in the URL hash fragment
+  // This page extracts them and displays the result
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Google Sign-In - AAROHA 2026</title>
+      <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        h1 { color: #4285f4; }
+        pre { background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .success { color: green; }
+        .error { color: red; }
+      </style>
+    </head>
+    <body>
+      <h1>🎶 AAROHA 2026 - Google Sign-In</h1>
+      <div id="result">Processing...</div>
+      <script>
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        const error = params.get('error_description');
+        
+        const resultDiv = document.getElementById('result');
+        
+        if (error) {
+          resultDiv.innerHTML = '<p class="error">Error: ' + error + '</p>';
+        } else if (accessToken) {
+          resultDiv.innerHTML = '<p class="success">✅ Google Sign-In Successful!</p>' +
+            '<h3>Access Token:</h3><pre>' + accessToken + '</pre>' +
+            '<h3>Refresh Token:</h3><pre>' + (refreshToken || 'N/A') + '</pre>' +
+            '<p>Use the access token in the Authorization header for API requests:</p>' +
+            '<pre>Authorization: Bearer ' + accessToken + '</pre>';
+        } else {
+          resultDiv.innerHTML = '<p class="error">No tokens found in URL</p>';
+        }
+      </script>
+    </body>
+    </html>
+  `);
+});
+
 // Root route
 app.get('/', (req, res) => {
   res.status(200).json({
