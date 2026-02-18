@@ -68,6 +68,12 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm text-gray-400">
+                <Phone className="w-4 h-4 text-neon-violet" />
+                <a href="tel:+919847847419" className="hover:text-neon-cyan transition-colors">
+                  Joel Biju: 9847847419
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-sm text-gray-400">
                 <Instagram className="w-4 h-4 text-neon-magenta" />
                 <a href="https://www.instagram.com/sargam_sjcet?igsh=MXNlcHJ4MTJwdmpseQ==" target="_blank" rel="noopener noreferrer" className="hover:text-neon-cyan transition-colors">
                   @sargam_sjcet
