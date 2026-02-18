@@ -94,8 +94,12 @@ export default function RegistrationPage() {
         // New registration — check if user already registered
         try {
           const { data } = await registrationAPI.getMyRegistrations();
-          if (data.success && data.data && data.data.length > 0) {
-            setHasExistingRegistration(true);
+          if (data.success && data.data) {
+            // Allow re-registration if all previous registrations were rejected
+            const activeRegs = data.data.filter(r => r.registration_status !== 'rejected' && r.payment_status !== 'failed');
+            if (activeRegs.length > 0) {
+              setHasExistingRegistration(true);
+            }
           }
         } catch {
           // Ignore — let them proceed
@@ -136,48 +140,38 @@ export default function RegistrationPage() {
     setError('');
 
     // Manual validation
-    if (!form.team_name.trim() || form.team_name.trim().length < 2) {
-      setError('Team / Band Name is required (at least 2 characters).');
+    const showError = (msg) => {
+      setError(msg);
       setLoading(false);
-      return;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    if (!form.team_name.trim() || form.team_name.trim().length < 2) {
+      return showError('Team / Band Name is required (at least 2 characters).');
     }
     if (!form.college_name.trim() || form.college_name.trim().length < 2) {
-      setError('College Name is required (at least 2 characters).');
-      setLoading(false);
-      return;
+      return showError('College Name is required (at least 2 characters).');
     }
     if (!form.team_leader_name.trim() || form.team_leader_name.trim().length < 2) {
-      setError('Leader Name is required (at least 2 characters).');
-      setLoading(false);
-      return;
+      return showError('Leader Name is required (at least 2 characters).');
     }
     if (!form.team_leader_email.trim() || !/\S+@\S+\.\S+/.test(form.team_leader_email)) {
-      setError('A valid Leader Email is required.');
-      setLoading(false);
-      return;
+      return showError('A valid Leader Email is required.');
     }
     if (!form.team_leader_phone.trim() || !/^[0-9]{10}$/.test(form.team_leader_phone)) {
-      setError('Leader Phone must be a 10-digit number.');
-      setLoading(false);
-      return;
+      return showError('Leader Phone must be a 10-digit number.');
     }
     if (!form.drum_setup.trim()) {
-      setError('Drum Setup is required (enter "none" if not needed).');
-      setLoading(false);
-      return;
+      return showError('Drum Setup is required (enter "none" if not needed).');
     }
     if (!form.transaction_id.trim()) {
-      setError('Transaction / UTR ID is required. Please make the payment and enter the transaction ID.');
-      setLoading(false);
-      return;
+      return showError('Transaction / UTR ID is required. Please make the payment and enter the transaction ID.');
     }
 
     // Validate team members
     const validMembers = form.team_members.filter((m) => m.name.trim() && m.role.trim());
     if (validMembers.length < 1) {
-      setError('At least one team member with name and role is required.');
-      setLoading(false);
-      return;
+      return showError('At least one team member with name and role is required.');
     }
 
     const payload = {
