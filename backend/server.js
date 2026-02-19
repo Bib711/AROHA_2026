@@ -41,13 +41,11 @@ const distPath = path.join(__dirname, '..', 'dist');
 app.use(express.static(distPath));
 
 // Root route — serve frontend or API info
-app.get('/', (req, res, next) => {
-  // If dist/index.html exists, let express.static handle it
-  // Otherwise fall through to API info
+app.get('/', (req, res) => {
   const fs = require('fs');
   const indexPath = path.join(distPath, 'index.html');
   if (fs.existsSync(indexPath)) {
-    return next(); // Will be caught by the SPA fallback below
+    return res.sendFile(indexPath);
   }
   // No frontend build — show API info
   res.status(200).json({
